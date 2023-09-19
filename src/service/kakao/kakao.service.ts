@@ -27,8 +27,8 @@ export class KakaoService {
     if (!code || !redirectUri) throw new Error('InsufficientParameters');
 
     const tokens = await this.getTokens(code, redirectUri);
-    const kakaoId = jwt.decode(tokens.id_token).sub as string;
     console.log(jwt.decode(tokens.id_token));
+    const kakaoId = jwt.decode(tokens.id_token).sub as string;
 
     return kakaoId;
   }
