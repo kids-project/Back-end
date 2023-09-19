@@ -14,16 +14,21 @@ export class UsersController {
     @Body('code') code: string,
     @Body('redirectUri') redirectUri: string,
   ) {
+    console.log(code, redirectUri);
     const signInWithKakaoRequestDto: SignInWithKakaoRequestDto = {
       code,
       redirectUri,
     };
-    const { accessToken, refreshToken, isSignUp } =
-      await this.usersService.signInWithKakao(signInWithKakaoRequestDto);
+    try {
+      const { accessToken, refreshToken, isSignUp } =
+        await this.usersService.signInWithKakao(signInWithKakaoRequestDto);
 
-    response.cookie('refreshToken', refreshToken, cookieOptions);
+      response.cookie('refreshToken', refreshToken, cookieOptions);
 
-    return { accessToken, isSignUp };
+      return { accessToken, isSignUp };
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   @Get('refresh-token')
