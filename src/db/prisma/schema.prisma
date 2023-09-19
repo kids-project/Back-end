@@ -15,4 +15,16 @@ model User {
   nickname  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  fairy Fairy?
+}
+
+model Fairy {
+  id     Int    @id @default(autoincrement())
+  type   String
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  name   String @default("룩키요정")
+  level  Int    @default(1)
+  exp    Float  @default(0)
 }
