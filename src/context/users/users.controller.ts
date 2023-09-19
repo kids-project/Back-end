@@ -18,16 +18,12 @@ export class UsersController {
       code,
       redirectUri,
     };
-    try {
-      const { accessToken, refreshToken, isSignUp } =
-        await this.usersService.signInWithKakao(signInWithKakaoRequestDto);
+    const { accessToken, refreshToken, isSignUp } =
+      await this.usersService.signInWithKakao(signInWithKakaoRequestDto);
 
-      response.cookie('refreshToken', refreshToken, cookieOptions);
+    response.cookie('refreshToken', refreshToken, cookieOptions);
 
-      return { accessToken, isSignUp };
-    } catch (e) {
-      console.log(e);
-    }
+    return { accessToken, isSignUp };
   }
 
   @Get('refresh-token')

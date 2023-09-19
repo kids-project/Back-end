@@ -22,20 +22,14 @@ export class KakaoService {
     this.kapi = axios.create({ baseURL: 'https://kapi.kakao.com', headers });
   }
 
-  async signIn(signInArgs: SignInArgs): Promise<string> {
+  async signIn(signInArgs: SignInArgs) {
     const { code, redirectUri } = signInArgs;
     if (!code || !redirectUri) throw new Error('InsufficientParameters');
 
     const tokens = await this.getTokens(code, redirectUri);
-    console.log(
-      '토큰:',
-      tokens.id_token,
-      '디코드토큰:',
-      jwt.decode(tokens.id_token),
-    );
-    const kakaoId = jwt.decode(tokens.id_token).sub as string;
+    const { sub: kakaoId, nickname } = jwt.decode(tokens.id_token);
 
-    return kakaoId;
+    return { kakaoId, nickname };
   }
 
   async getTokens(code: string, redirectUri: string): Promise<GetTokensData> {
@@ -48,7 +42,6 @@ export class KakaoService {
     });
 
     const response = await this.kauth.post<GetTokensData>(url, data);
-    console.log(response, '데이터:', response.data);
     return response.data;
   }
 

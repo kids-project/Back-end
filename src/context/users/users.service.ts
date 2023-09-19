@@ -14,9 +14,9 @@ export class UsersService {
     private kakaoService: KakaoService,
   ) {}
 
-  async createUser(kakaoId: string) {
+  async createUser(kakaoId: string, nickname: string) {
     const user = await this.prismaService.user.create({
-      data: { id: kakaoId },
+      data: { id: kakaoId, nickname },
     });
 
     return user;
@@ -26,18 +26,18 @@ export class UsersService {
     const { code, redirectUri } = signInWithKakaoRequestDto;
     if (!code || !redirectUri) throw new Error('Bad Request');
 
-    const kakaoId = await this.kakaoService.signIn(signInWithKakaoRequestDto);
+    const { kakaoId, nickname } = await this.kakaoService.signIn(
+      signInWithKakaoRequestDto,
+    );
 
     let user = await this.prismaService.user.findUnique({
       where: { id: kakaoId },
     });
     let isSignUp = false;
     if (!user) {
-      user = await this.createUser(kakaoId);
+      user = await this.createUser(kakaoId, nickname);
       isSignUp = true;
     }
-
-    await this.syncUserWithKakaoMe(kakaoId);
 
     const accessToken = await this.createAccessToken(user);
     const refreshToken = await this.createRefreshToken(user);
@@ -107,18 +107,5 @@ export class UsersService {
     const refreshToken: string = sign(payload, secret, { expiresIn });
 
     return refreshToken;
-  }
-
-  async syncUserWithKakaoMe(kakaoId: string) {
-    const kakaoMe = await this.kakaoService.getMe(kakaoId);
-
-    const nickname = kakaoMe.kakao_account.profile_nickname;
-
-    const user = await this.prismaService.user.update({
-      where: { id: kakaoId },
-      data: { nickname },
-    });
-
-    return user;
   }
 }
