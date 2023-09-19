@@ -11,7 +11,7 @@ const NODE_ENV = process.env.NODE_ENV;
 export class KakaoService {
   private readonly kauth: AxiosInstance;
   private readonly kapi: AxiosInstance;
-  private readonly REST_API_KEYS = process.env.KAKAO_REST_API_KEYS;
+  private readonly REST_API_KEY = process.env.KAKAO_REST_API_KEY;
   private readonly ADMIN_KEY = process.env.KAKAO_ADMIN_KEY;
 
   constructor() {
@@ -36,7 +36,7 @@ export class KakaoService {
     const url = '/oauth/token';
     const data = QueryString.stringify({
       grant_type: 'authorization_code',
-      client_id: this.REST_API_KEYS[NODE_ENV],
+      client_id: this.REST_API_KEY,
       redirect_uri: redirectUri,
       code,
     });
