@@ -48,7 +48,7 @@ export class KakaoService {
     });
 
     const response = await this.kauth.post<GetTokensData>(url, data);
-
+    console.log(response, '데이터:', response.data);
     return response.data;
   }
 
