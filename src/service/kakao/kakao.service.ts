@@ -13,6 +13,7 @@ export class KakaoService {
   private readonly kapi: AxiosInstance;
   private readonly REST_API_KEY = process.env.KAKAO_REST_API_KEY;
   private readonly ADMIN_KEY = process.env.KAKAO_ADMIN_KEY;
+  private readonly CLIENT_SECRET = process.env.CLIENT_SECRET;
 
   constructor() {
     const headers = {
@@ -39,6 +40,7 @@ export class KakaoService {
       client_id: this.REST_API_KEY,
       redirect_uri: redirectUri,
       code,
+      client_secret: this.CLIENT_SECRET,
     });
 
     const response = await this.kauth.post<GetTokensData>(url, data);
