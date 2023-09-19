@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/db/prisma/prisma.service';
 import { CreateFairyDto, UpdateFairyDto } from './fairy.dto';
-import { User as TUser } from '@prisma/client';
+import { Prisma, User as TUser } from '@prisma/client';
 
 @Injectable()
 export class FairyService {
@@ -25,11 +25,15 @@ export class FairyService {
     return fairy;
   }
 
-  async growFairy(user: TUser, updateFairyDto: UpdateFairyDto) {
-    const { level, exp } = updateFairyDto;
+  async updateFairy(user: TUser, updateFairyDto: UpdateFairyDto) {
+    const { updateFairyType, expIncrementValue } = updateFairyDto;
+    const fairyUpdateInput: Prisma.FairyUpdateInput =
+      updateFairyType === 'exp'
+        ? { exp: { increment: expIncrementValue } }
+        : { level: { increment: 1 } };
     const fairy = await this.prismaService.fairy.update({
       where: { userId: user.id },
-      data: { level, exp },
+      data: fairyUpdateInput,
     });
 
     return fairy;
