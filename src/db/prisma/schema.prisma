@@ -20,11 +20,12 @@ model User {
 }
 
 model Fairy {
-  id     Int    @id @default(autoincrement())
-  type   String
+  id    Int    @id @default(autoincrement())
+  type  String
+  name  String @default("룩키요정")
+  level Int    @default(1)
+  exp   Float  @default(0)
+
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
-  name   String @default("룩키요정")
-  level  Int    @default(1)
-  exp    Float  @default(0)
 }

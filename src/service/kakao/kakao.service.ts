@@ -28,6 +28,7 @@ export class KakaoService {
 
     const tokens = await this.getTokens(code, redirectUri);
     const kakaoId = jwt.decode(tokens.id_token).sub as string;
+    console.log(jwt.decode(tokens.id_token));
 
     return kakaoId;
   }
