@@ -14,7 +14,6 @@ export class UsersController {
     @Body('code') code: string,
     @Body('redirectUri') redirectUri: string,
   ) {
-    console.log(code, redirectUri);
     const signInWithKakaoRequestDto: SignInWithKakaoRequestDto = {
       code,
       redirectUri,
