@@ -16,7 +16,32 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  fairy Fairy?
+  fairy     Fairy?
+  inventory Inventory?
+}
+
+model Inventory {
+  id               Int               @id @default(autoincrement())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inventoryToItems InventoryToItem[]
+}
+
+model Item {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  expValue         Float
+  inventoryToItems InventoryToItem[]
+}
+
+model InventoryToItem {
+  inventoryId Int
+  itemId      Int
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  item        Item      @relation(fields: [itemId], references: [id])
+  quantity    Int       @default(0)
+
+  @@id([inventoryId, itemId])
 }
 
 model Fairy {
@@ -27,5 +52,5 @@ model Fairy {
   exp   Float  @default(0)
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
