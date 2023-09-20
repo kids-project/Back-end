@@ -11,6 +11,8 @@ import { UsersService } from './users.service';
 import { SignInWithKakaoRequestDto } from './users.dto';
 import { User } from 'src/decorators/user.decorator';
 import { User as TUser } from '@prisma/client';
+import { Roles } from 'src/decorators/roles.decorator';
+import { ROLE } from './users.constant';
 
 @Controller('users')
 export class UsersController {
@@ -42,11 +44,13 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles(ROLE.USER)
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
   }
 
   @Get('me')
+  @Roles(ROLE.USER)
   getMe(@User() user: TUser) {
     return this.usersService.getMe(user);
   }

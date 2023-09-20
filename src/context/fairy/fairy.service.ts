@@ -11,16 +11,12 @@ export class FairyService {
     const { name, type } = createFairyDto;
 
     // 요정, inventory 생성
-    const fairyPromise = this.prismaService.fairy.create({
-      data: { user: { connect: { id: user.id } }, name, type },
+    await this.prismaService.fairy.create({
+      data: { userId: user.id, name, type },
     });
-    const inventoryPromise = this.prismaService.inventory.create({
-      data: { user: { connect: { id: user.id } } },
+    const inventory = await this.prismaService.inventory.create({
+      data: { userId: user.id },
     });
-    const [_fairy, inventory] = await Promise.all([
-      fairyPromise,
-      inventoryPromise,
-    ]);
 
     // item 생성 및 지급 (이슬: 5개, 마법가루: 2개)
     const items = await this.prismaService.item.findMany();
