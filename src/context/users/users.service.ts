@@ -119,14 +119,24 @@ export class UsersService {
   }
 
   async getMe(user: User) {
-    const me = await this.prismaService.user.findUnique({
+    const { inventory, ...me } = await this.prismaService.user.findUnique({
       where: { id: user.id },
       include: {
         fairy: true,
-        inventory: { include: { inventoryToItems: true } },
+        inventory: {
+          include: {
+            inventoryToItems: { include: { item: { select: { name: true } } } },
+          },
+        },
       },
     });
+    const inventoryToItems = inventory.inventoryToItems.map(
+      (inventoryToItem) => ({
+        name: inventoryToItem.item.name,
+        quantity: inventoryToItem.quantity,
+      }),
+    );
 
-    return me;
+    return { ...me, inventory: { ...inventory, inventoryToItems } };
   }
 }
