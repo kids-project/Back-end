@@ -108,4 +108,11 @@ export class UsersService {
 
     return refreshToken;
   }
+
+  async deleteUser(id: string) {
+    await this.kakaoService.unlink(id);
+    const user = await this.prismaService.user.delete({ where: { id } });
+
+    return user;
+  }
 }

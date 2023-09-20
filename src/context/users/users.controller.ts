@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignInWithKakaoRequestDto } from './users.dto';
 
@@ -29,5 +37,10 @@ export class UsersController {
       await this.usersService.refreshToken(refreshToken);
 
     return { accessToken, refreshToken };
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string) {
+    return this.usersService.deleteUser(id);
   }
 }
