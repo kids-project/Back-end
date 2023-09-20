@@ -10,11 +10,38 @@ export class FairyService {
   async createFairy(user: TUser, createFairyDto: CreateFairyDto) {
     const { name, type } = createFairyDto;
 
-    const fairy = await this.prismaService.fairy.create({
+    // 요정, inventory 생성
+    const fairyPromise = this.prismaService.fairy.create({
       data: { user: { connect: { id: user.id } }, name, type },
     });
+    const inventoryPromise = this.prismaService.inventory.create({
+      data: { user: { connect: { id: user.id } } },
+    });
+    const [_fairy, inventory] = await Promise.all([
+      fairyPromise,
+      inventoryPromise,
+    ]);
 
-    return fairy;
+    // item 생성 및 지급 (이슬: 5개, 마법가루: 2개)
+    const items = await this.prismaService.item.findMany();
+    const inventoryToItemCreateManyInput: Prisma.InventoryToItemCreateManyInput[] =
+      items.map((item) => ({ inventoryId: inventory.id, itemId: item.id }));
+    await this.prismaService.inventoryToItem.createMany({
+      data: inventoryToItemCreateManyInput,
+    });
+
+    await Promise.all([
+      this.prismaService.inventoryToItem.update({
+        where: { inventoryId_itemId: { inventoryId: inventory.id, itemId: 1 } },
+        data: { quantity: 5 },
+      }),
+      this.prismaService.inventoryToItem.update({
+        where: { inventoryId_itemId: { inventoryId: inventory.id, itemId: 2 } },
+        data: { quantity: 2 },
+      }),
+    ]);
+
+    return;
   }
 
   async getFairy(user: TUser) {

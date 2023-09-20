@@ -30,7 +30,7 @@ model Inventory {
 model Item {
   id               Int               @id @default(autoincrement())
   name             String            @unique
-  expValue         Float
+  expValue         Float?
   inventoryToItems InventoryToItem[]
 }
 
@@ -45,11 +45,12 @@ model InventoryToItem {
 }
 
 model Fairy {
-  id    Int    @id @default(autoincrement())
-  type  String
-  name  String @default("룩키요정")
-  level Int    @default(1)
-  exp   Float  @default(0)
+  id               Int    @id @default(autoincrement())
+  type             String
+  name             String @default("룩키요정")
+  level            Int    @default(1)
+  exp              Float  @default(0)
+  magicPowderGauge Int    @default(100)
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

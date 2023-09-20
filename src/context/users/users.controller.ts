@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SignInWithKakaoRequestDto } from './users.dto';
+import { User } from 'src/decorators/user.decorator';
+import { User as TUser } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -40,7 +42,12 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
+  }
+
+  @Get('me')
+  getMe(@User() user: TUser) {
+    return this.usersService.getMe(user);
   }
 }
