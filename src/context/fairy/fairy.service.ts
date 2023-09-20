@@ -27,10 +27,23 @@ export class FairyService {
 
   async updateFairy(user: TUser, updateFairyDto: UpdateFairyDto) {
     const { updateFairyType, expIncrementValue } = updateFairyDto;
+    if (updateFairyType === 'exp') {
+      const prevExp = await this.prismaService.fairy
+        .findUnique({
+          where: { userId: user.id },
+          select: { exp: true },
+        })
+        .then((fairy) => fairy.exp);
+      if (prevExp + expIncrementValue >= 100) {
+        return this.updateFairy(user, { updateFairyType: 'level' });
+      }
+    }
+
     const fairyUpdateInput: Prisma.FairyUpdateInput =
       updateFairyType === 'exp'
         ? { exp: { increment: expIncrementValue } }
-        : { level: { increment: 1 } };
+        : { level: { increment: 1 }, exp: 0 };
+
     const fairy = await this.prismaService.fairy.update({
       where: { userId: user.id },
       data: fairyUpdateInput,
