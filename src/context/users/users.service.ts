@@ -5,7 +5,7 @@ import { KakaoService } from 'src/service/kakao/kakao.service';
 import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload, sign } from 'jsonwebtoken';
-import { TOKEN_TYPE } from './users.constant';
+import { ROLE, TOKEN_TYPE } from './users.constant';
 
 @Injectable()
 export class UsersService {
@@ -82,6 +82,7 @@ export class UsersService {
   async createAccessToken(user: Pick<User, 'id'>): Promise<string> {
     const payload: JwtPayload = {
       sub: user.id,
+      role: ROLE.USER,
       type: TOKEN_TYPE.ACCESS_TOKEN,
     };
     const secret = process.env.JWT_SECRET;
@@ -97,6 +98,7 @@ export class UsersService {
   async createRefreshToken(user: Pick<User, 'id'>): Promise<string> {
     const payload: JwtPayload = {
       sub: user.id,
+      role: ROLE.USER,
       type: TOKEN_TYPE.REFRESH_TOKEN,
     };
     const secret = process.env.JWT_SECRET;
@@ -114,5 +116,17 @@ export class UsersService {
     const user = await this.prismaService.user.delete({ where: { id } });
 
     return user;
+  }
+
+  async getMe(user: User) {
+    const me = await this.prismaService.user.findUnique({
+      where: { id: user.id },
+      include: {
+        fairy: true,
+        inventory: { include: { inventoryToItems: true } },
+      },
+    });
+
+    return me;
   }
 }
