@@ -23,4 +23,10 @@ export class FairyController {
   createFairy(@User() user: TUser, @Body() createFairyDto: CreateFairyDto) {
     return this.fairyService.createFairy(user, createFairyDto);
   }
+
+  @Get()
+  @Roles(ROLE.USER)
+  getFairy(@User() user: TUser) {
+    return this.getFairy(user);
+  }
 }

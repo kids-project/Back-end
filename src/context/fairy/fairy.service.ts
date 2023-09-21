@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/db/prisma/prisma.service';
 import { CreateFairyDto, UpdateFairyDto } from './fairy.dto';
 import { Prisma, User as TUser } from '@prisma/client';
+import { Exception, ExceptionCode } from 'src/app.exception';
 
 @Injectable()
 export class FairyService {
@@ -9,6 +10,14 @@ export class FairyService {
 
   async createFairy(user: TUser, createFairyDto: CreateFairyDto) {
     const { name, type } = createFairyDto;
+    const existingFairy = await this.prismaService.fairy.findUnique({
+      where: { userId: user.id },
+    });
+    if (existingFairy)
+      throw new Exception(
+        ExceptionCode.AlreadyUsedValue,
+        '이미 요정을 만들었어요~',
+      );
 
     // 요정, inventory 생성
     await this.prismaService.fairy.create({
@@ -37,7 +46,7 @@ export class FairyService {
       }),
     ]);
 
-    return;
+    return 'fairy created';
   }
 
   async getFairy(user: TUser) {
