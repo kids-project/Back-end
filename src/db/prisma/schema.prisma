@@ -18,26 +18,6 @@ model User {
 
   fairy     Fairy?
   inventory Inventory?
-
-  // 출석 미션
-  clearedMONMission Boolean @default(false)
-  clearedTUEMission Boolean @default(false)
-  clearedWEDMission Boolean @default(false)
-  clearedTHUMission Boolean @default(false)
-  clearedFRIMission Boolean @default(false)
-  clearedSATMission Boolean @default(false)
-  clearedSUNMission Boolean @default(false)
-
-  // 마법 가루 미션
-  clearedShareMission      Boolean @default(false)
-  clearedAttendanceMission Boolean @default(false)
-  clearedPurchaseMission   Boolean @default(false)
-
-  // 이슬 미션
-  clearedTrendMission Boolean @default(false)
-  clearedEventMission Boolean @default(false)
-  clearedNewMission   Boolean @default(false)
-  clearedResellMissio Boolean @default(false)
 }
 
 model Inventory {
@@ -74,4 +54,24 @@ model Fairy {
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 출석 미션
+  clearedMONMission Boolean @default(false)
+  clearedTUEMission Boolean @default(false)
+  clearedWEDMission Boolean @default(false)
+  clearedTHUMission Boolean @default(false)
+  clearedFRIMission Boolean @default(false)
+  clearedSATMission Boolean @default(false)
+  clearedSUNMission Boolean @default(false)
+
+  // 마법 가루 미션
+  clearedShareMission      Boolean @default(false)
+  clearedAttendanceMission Boolean @default(false)
+  clearedPurchaseMission   Boolean @default(false)
+
+  // 이슬 미션
+  clearedTrendMission  Boolean @default(false)
+  clearedEventMission  Boolean @default(false)
+  clearedNewMission    Boolean @default(false)
+  clearedResellMission Boolean @default(false)
 }
