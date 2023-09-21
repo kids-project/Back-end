@@ -1,4 +1,4 @@
-import { Fairy } from '@prisma/client';
+import { AcquireRewardsDto } from '../inventory/inventory.dto';
 
 export type CreateFairyDto = { name: string; type: FairyType };
 
@@ -24,3 +24,8 @@ export type MissionType =
   | 'event'
   | 'new'
   | 'resell';
+
+export type ClearMissionDto = {
+  missionType: MissionType;
+  acquireRewardsParams: AcquireRewardsDto;
+};

@@ -1,9 +1,9 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PrismaService } from 'src/db/prisma/prisma.service';
 import {
+  ClearMissionDto,
   CreateFairyDto,
   IncreaseFairyExpParams,
-  MissionType,
 } from './fairy.dto';
 import { Prisma, User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
@@ -98,57 +98,74 @@ export class FairyService {
     return fairy;
   }
 
-  async clearMission(user: TUser, missionType: MissionType) {
+  async clearMission(user: TUser, clearMissionDto: ClearMissionDto) {
+    const { missionType, acquireRewardsParams } = clearMissionDto;
     let fairyUpdateInput: Prisma.FairyUpdateInput;
 
     switch (missionType) {
       case 'MON':
         fairyUpdateInput = { clearedMONMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'TUE':
         fairyUpdateInput = { clearedTUEMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'WED':
         fairyUpdateInput = { clearedWEDMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'THU':
         fairyUpdateInput = { clearedTHUMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'FRI':
         fairyUpdateInput = { clearedFRIMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'SAT':
         fairyUpdateInput = { clearedSATMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'SUN':
         fairyUpdateInput = { clearedSUNMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'share':
         fairyUpdateInput = { clearedShareMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'attendance':
         fairyUpdateInput = { clearedAttendanceMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'purchase':
         fairyUpdateInput = { clearedPurchaseMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'trend':
         fairyUpdateInput = { clearedTrendMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'event':
         fairyUpdateInput = { clearedEventMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'new':
         fairyUpdateInput = { clearedNewMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
       case 'resell':
         fairyUpdateInput = { clearedResellMission: true };
+        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
         break;
     }
+
     await this.prismaService.fairy.update({
       where: { userId: user.id },
       data: fairyUpdateInput,
     });
+
     const me = await this.usersService.getMe(user);
 
     return me;

@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { FairyService } from './fairy.service';
-import { CreateFairyDto, MissionType } from './fairy.dto';
+import { ClearMissionDto, CreateFairyDto } from './fairy.dto';
 import { User } from 'src/decorators/user.decorator';
 import { User as TUser } from '@prisma/client';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -34,11 +34,8 @@ export class FairyController {
 
   @Patch('clear-mission')
   @Roles(ROLE.USER)
-  clearMission(
-    @User() user: TUser,
-    @Query('missionType') missionType: MissionType,
-  ) {
-    return this.fairyService.clearMission(user, missionType);
+  clearMission(@User() user: TUser, @Body() clearMissionDto: ClearMissionDto) {
+    return this.fairyService.clearMission(user, clearMissionDto);
   }
 
   // 매일 UTC 15시 (KST 00시)
