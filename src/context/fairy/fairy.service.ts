@@ -4,6 +4,7 @@ import {
   ClearMissionDto,
   CreateFairyDto,
   IncreaseFairyExpParams,
+  MissionType,
 } from './fairy.dto';
 import { Prisma, User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
@@ -98,66 +99,209 @@ export class FairyService {
     return fairy;
   }
 
-  async clearMission(user: TUser, clearMissionDto: ClearMissionDto) {
-    const { missionType, acquireRewardsParams } = clearMissionDto;
+  async clearMission(user: TUser, missionType: MissionType) {
     let fairyUpdateInput: Prisma.FairyUpdateInput;
-
+    const fairy = await this.prismaService.fairy.findUnique({
+      where: { userId: user.id },
+      select: {
+        clearedAttendanceMission: true,
+        clearedEventMission: true,
+        clearedFRIMission: true,
+        clearedMONMission: true,
+        clearedNewMission: true,
+        clearedPurchaseMission: true,
+        clearedResellMission: true,
+        clearedSATMission: true,
+        clearedShareMission: true,
+        clearedSUNMission: true,
+        clearedTHUMission: true,
+        clearedTrendMission: true,
+        clearedTUEMission: true,
+        clearedWEDMission: true,
+      },
+    });
     switch (missionType) {
       case 'MON':
+        if (fairy.clearedMONMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
+
         fairyUpdateInput = { clearedMONMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'TUE':
+        if (fairy.clearedTUEMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedTUEMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'WED':
+        if (fairy.clearedWEDMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedWEDMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'THU':
+        if (fairy.clearedTHUMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedTHUMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'FRI':
+        if (fairy.clearedFRIMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedFRIMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'SAT':
+        if (fairy.clearedSATMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedSATMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'SUN':
+        if (fairy.clearedSUNMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedSUNMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+          heart: 1,
+          magicPowder: 1,
+        });
         break;
+
       case 'share':
+        if (fairy.clearedShareMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedShareMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          magicPowder: 1,
+        });
         break;
+
       case 'attendance':
+        if (fairy.clearedAttendanceMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedAttendanceMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          magicPowder: 1,
+        });
         break;
+
       case 'purchase':
+        if (fairy.clearedPurchaseMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedPurchaseMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          magicPowder: 2,
+        });
         break;
+
       case 'trend':
+        if (fairy.clearedTrendMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedTrendMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+        });
         break;
+
       case 'event':
+        if (fairy.clearedEventMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedEventMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+        });
         break;
+
       case 'new':
+        if (fairy.clearedNewMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedNewMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+        });
         break;
+
       case 'resell':
+        if (fairy.clearedResellMission)
+          throw new Exception(
+            ExceptionCode.BadRequest,
+            '이미 완료한 미션입니다.',
+          );
         fairyUpdateInput = { clearedResellMission: true };
-        await this.inventoryService.acquireRewards(user, acquireRewardsParams);
+        await this.inventoryService.acquireRewards(user, {
+          dew: 1,
+        });
         break;
     }
 
