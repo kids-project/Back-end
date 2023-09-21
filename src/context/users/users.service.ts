@@ -130,7 +130,7 @@ export class UsersService {
         },
       },
     });
-    const inventoryToItems = inventory.inventoryToItems.map(
+    const inventoryToItems = inventory?.inventoryToItems?.map(
       (inventoryToItem) => ({
         name: inventoryToItem.item.name,
         quantity: inventoryToItem.quantity,
