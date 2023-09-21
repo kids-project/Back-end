@@ -85,14 +85,15 @@ export class InventoryService {
         await this.useMagicPowder(user);
         break;
     }
+    const me = await this.usersService.getMe(user);
 
-    return this.usersService.getMe(user);
+    return me;
   }
 
   async useDewOrHeart(user: TUser, name: 'dew' | 'heart') {
     const inventoryId = await this.getInventoryId(user);
     const item = await this.prismaService.item.findUnique({
-      where: { name: 'dew' },
+      where: { name },
     });
     const inventoryToItem = await this.prismaService.inventoryToItem.findUnique(
       {

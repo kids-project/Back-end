@@ -18,6 +18,7 @@ export class InventoryController {
 
   @Put('item/:useItemType')
   useItem(@User() user: TUser, @Param('useItemType') useItemType: UseItemType) {
+    console.log(useItemType);
     return this.inventoryService.useItem(user, useItemType);
   }
 }
