@@ -3,10 +3,14 @@ import { AcquireRewardsDto } from './inventory.dto';
 import { User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
 import { PrismaService } from 'src/db/prisma/prisma.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class InventoryService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly usersService: UsersService,
+  ) {}
 
   async acquireRewards(user: TUser, acquireRewardsDto: AcquireRewardsDto) {
     const { dew, heart, magicPowder } = acquireRewardsDto;
@@ -56,5 +60,9 @@ export class InventoryService {
         },
         data: { quantity: { increment: magicPowder } },
       });
+
+    const updatedUser = await this.usersService.getMe(user);
+
+    return updatedUser;
   }
 }
