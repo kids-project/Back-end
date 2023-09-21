@@ -8,3 +8,19 @@ export type IncreaseFairyExpParams = {
 };
 
 export type FairyType = 'leafy' | 'flowery';
+
+export type MissionType =
+  | 'MON'
+  | 'TUE'
+  | 'WED'
+  | 'THU'
+  | 'FRI'
+  | 'SAT'
+  | 'SUN'
+  | 'share'
+  | 'attendance'
+  | 'purchase'
+  | 'trend'
+  | 'event'
+  | 'new'
+  | 'resell';

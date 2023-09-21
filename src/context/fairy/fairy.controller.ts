@@ -8,11 +8,12 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FairyService } from './fairy.service';
-import { CreateFairyDto } from './fairy.dto';
+import { CreateFairyDto, MissionType } from './fairy.dto';
 import { User } from 'src/decorators/user.decorator';
 import { User as TUser } from '@prisma/client';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ROLE } from '../users/users.constant';
+import { Cron } from '@nestjs/schedule';
 
 @Controller('fairy')
 export class FairyController {
@@ -28,5 +29,28 @@ export class FairyController {
   @Roles(ROLE.USER)
   getFairy(@User() user: TUser) {
     return this.fairyService.getFairy(user);
+  }
+
+  @Patch('clear-mission/:missionType')
+  @Roles(ROLE.USER)
+  clearMission(@User() user: TUser, missionType: MissionType) {
+    return this.fairyService.clearMission(user, missionType);
+  }
+
+  // 매일 UTC 15시 (KST 00시)
+  @Cron('0 15 * * *')
+  initDailyMissions() {
+    return this.fairyService.initDailyMissions();
+  }
+
+  // 매주 월요일 UTC 15시 (KST 00시)
+  @Cron('0 15 * * 1')
+  initWeaklyMissions() {
+    return this.fairyService.initWeaklyMissions();
+  }
+
+  @Cron('*/5 * * * * *')
+  test() {
+    console.log(new Date());
   }
 }
