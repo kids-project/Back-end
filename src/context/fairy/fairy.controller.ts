@@ -27,6 +27,6 @@ export class FairyController {
   @Get()
   @Roles(ROLE.USER)
   getFairy(@User() user: TUser) {
-    return this.getFairy(user);
+    return this.fairyService.getFairy(user);
   }
 }
