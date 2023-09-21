@@ -2,7 +2,7 @@ import { Fairy } from '@prisma/client';
 
 export type CreateFairyDto = { name: string; type: FairyType };
 
-export type UpdateFairyDto = {
+export type IncreaseFairyExpParams = {
   updateFairyType: 'level' | 'exp';
   expIncrementValue?: number;
 };

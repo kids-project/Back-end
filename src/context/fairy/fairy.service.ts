@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/db/prisma/prisma.service';
-import { CreateFairyDto, UpdateFairyDto } from './fairy.dto';
+import { CreateFairyDto, IncreaseFairyExpParams } from './fairy.dto';
 import { Prisma, User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
 
@@ -57,8 +57,11 @@ export class FairyService {
     return fairy;
   }
 
-  async updateFairy(user: TUser, updateFairyDto: UpdateFairyDto) {
-    const { updateFairyType, expIncrementValue } = updateFairyDto;
+  async increaseFairyExp(
+    user: TUser,
+    increaseFairyExpParams: IncreaseFairyExpParams,
+  ) {
+    const { updateFairyType, expIncrementValue } = increaseFairyExpParams;
     if (updateFairyType === 'exp') {
       const prevExp = await this.prismaService.fairy
         .findUnique({
@@ -67,7 +70,7 @@ export class FairyService {
         })
         .then((fairy) => fairy.exp);
       if (prevExp + expIncrementValue >= 100) {
-        return this.updateFairy(user, { updateFairyType: 'level' });
+        return this.increaseFairyExp(user, { updateFairyType: 'level' });
       }
     }
 

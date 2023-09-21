@@ -5,5 +5,6 @@ import { FairyController } from './fairy.controller';
 @Module({
   controllers: [FairyController],
   providers: [FairyService],
+  exports: [FairyService],
 })
 export class FairyModule {}
