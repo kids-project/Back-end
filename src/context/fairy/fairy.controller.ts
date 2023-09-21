@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FairyService } from './fairy.service';
 import { CreateFairyDto, MissionType } from './fairy.dto';
@@ -31,9 +32,13 @@ export class FairyController {
     return this.fairyService.getFairy(user);
   }
 
-  @Patch('clear-mission/:missionType')
+  @Patch('clear-mission')
   @Roles(ROLE.USER)
-  clearMission(@User() user: TUser, missionType: MissionType) {
+  clearMission(
+    @User() user: TUser,
+    @Query('missionType') missionType: MissionType,
+  ) {
+    console.log(missionType);
     return this.fairyService.clearMission(user, missionType);
   }
 
