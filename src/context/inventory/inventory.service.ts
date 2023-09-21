@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { AcquireRewardsDto, UseItemType } from './inventory.dto';
 import { Item, User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
@@ -11,6 +11,7 @@ export class InventoryService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => FairyService))
     private readonly fairyService: FairyService,
   ) {}
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PrismaService } from 'src/db/prisma/prisma.service';
 import {
   CreateFairyDto,
@@ -8,12 +8,15 @@ import {
 import { Prisma, User as TUser } from '@prisma/client';
 import { Exception, ExceptionCode } from 'src/app.exception';
 import { UsersService } from '../users/users.service';
+import { InventoryService } from '../inventory/inventory.service';
 
 @Injectable()
 export class FairyService {
   constructor(
     private prismaService: PrismaService,
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => InventoryService))
+    private readonly inventoryService: InventoryService,
   ) {}
 
   async createFairy(user: TUser, createFairyDto: CreateFairyDto) {
