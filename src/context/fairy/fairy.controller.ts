@@ -38,7 +38,6 @@ export class FairyController {
     @User() user: TUser,
     @Query('missionType') missionType: MissionType,
   ) {
-    console.log(missionType);
     return this.fairyService.clearMission(user, missionType);
   }
 

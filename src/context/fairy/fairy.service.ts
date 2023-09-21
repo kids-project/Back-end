@@ -142,7 +142,6 @@ export class FairyService {
         fairyUpdateInput = { clearedResellMission: true };
         break;
     }
-    console.log(fairyUpdateInput);
     await this.prismaService.fairy.update({
       where: { userId: user.id },
       data: fairyUpdateInput,
