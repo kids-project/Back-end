@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { DBModule } from './db/db.module';
 import { ContextModule } from './context/context.module';
 import { InjectAccountMiddleware } from './middlewares/InjectAccount.middleware';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [DBModule, ContextModule],
+  imports: [DBModule, ContextModule, ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })
