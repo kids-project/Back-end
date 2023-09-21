@@ -3,3 +3,5 @@ export type AcquireRewardsDto = {
   magicPowder?: number;
   heart?: number;
 };
+
+export type UseItemType = 'dew' | 'magicPowder' | 'heart';
