@@ -48,9 +48,4 @@ export class FairyController {
   initWeaklyMissions() {
     return this.fairyService.initWeaklyMissions();
   }
-
-  @Cron('*/5 * * * * *')
-  test() {
-    console.log(new Date());
-  }
 }
