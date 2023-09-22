@@ -41,13 +41,17 @@ export class FairyController {
     return this.fairyService.clearMission(user, missionType);
   }
 
-  // 매일 UTC 15시 (KST 00시)
+  // 매일 KST 00시
   @Cron('0 0 0 * * *')
   initDailyMissions() {
     return this.fairyService.initDailyMissions();
   }
+  @Cron('0 0 1 * * *')
+  initDailyMissions2() {
+    return this.fairyService.initDailyMissions();
+  }
 
-  // 매주 월요일 UTC 15시 (KST 00시)
+  // 매주 월요일 KST 00시
   @Cron('0 0 0 * * 1')
   initWeaklyMissions() {
     return this.fairyService.initWeaklyMissions();

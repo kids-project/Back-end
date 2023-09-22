@@ -18,8 +18,8 @@ export class InjectAccountMiddleware implements NestMiddleware {
     if (req.baseUrl.includes('delete')) return next();
 
     const accessToken = req.headers.authorization?.split('Bearer ')[1];
-    if (!accessToken) return next();
-    console.log(accessToken);
+    if (!accessToken || accessToken === null || accessToken === 'null')
+      return next();
 
     const { role, type } = jwt.decode(accessToken) as {
       role: ROLE;

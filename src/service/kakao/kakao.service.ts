@@ -53,14 +53,9 @@ export class KakaoService {
     });
     const headers = { Authorization: `KakaoAK ${this.ADMIN_KEY}` };
 
-    try {
-      const result = await this.kapi.post(url, data, { headers });
-      console.log(result);
+    await this.kapi.post(url, data, { headers });
 
-      return kakaoId;
-    } catch (e) {
-      console.log(e);
-    }
+    return kakaoId;
   }
 
   async getMe(kakaoId: string) {
