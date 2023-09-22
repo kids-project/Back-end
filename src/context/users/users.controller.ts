@@ -43,7 +43,7 @@ export class UsersController {
     return { accessToken, refreshToken };
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   @Roles(ROLE.USER)
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
