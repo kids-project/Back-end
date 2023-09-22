@@ -54,4 +54,9 @@ export class UsersController {
   getMe(@User() user: TUser) {
     return this.usersService.getMe(user);
   }
+
+  @Get('test')
+  test() {
+    return this.usersService.test();
+  }
 }

@@ -13,6 +13,10 @@ export class UsersService {
     private prismaService: PrismaService,
     private kakaoService: KakaoService,
   ) {}
+  async test() {
+    const test = await this.kakaoService.unlink('3029380983');
+    return test;
+  }
 
   async createUser(kakaoId: string, nickname: string) {
     const user = await this.prismaService.user.create({

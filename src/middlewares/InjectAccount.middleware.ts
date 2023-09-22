@@ -19,6 +19,7 @@ export class InjectAccountMiddleware implements NestMiddleware {
 
     const accessToken = req.headers.authorization?.split('Bearer ')[1];
     if (!accessToken) return next();
+    console.log(accessToken);
 
     const { role, type } = jwt.decode(accessToken) as {
       role: ROLE;
