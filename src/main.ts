@@ -5,7 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
-    origin: 'http://lookids.bucket.s3-website.kr.object.ncloudstorage.com',
+    origin: 'https://hanghackerton-lookids.vercel.app',
   });
 
   await app.listen(3000);
