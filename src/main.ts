@@ -5,9 +5,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
-    origin: 'https://hanghackerton-lookids.vercel.app',
+    origin: ['http://localhost:3000'],
   });
 
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();
