@@ -6,6 +6,7 @@ import { User } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import { ROLE, TOKEN_TYPE } from './users.constant';
+import { Exception, ExceptionCode } from 'src/app.exception';
 
 @Injectable()
 export class UsersService {
@@ -123,6 +124,11 @@ export class UsersService {
   }
 
   async getMe(user: User) {
+    if (!user)
+      throw new Exception(
+        ExceptionCode.InsufficientParameters,
+        '파라미터를 확인해 주세요',
+      );
     const { inventory, ...me } = await this.prismaService.user.findUnique({
       where: { id: user.id },
       include: {
