@@ -346,4 +346,15 @@ export class FairyService {
 
     return;
   }
+
+  async deleteFairy(user: TUser) {
+    await this.prismaService.user.update({
+      where: { id: user.id },
+      data: { fairy: { delete: {} }, inventory: { delete: {} } },
+    });
+
+    const me = await this.usersService.getMe(user);
+
+    return me;
+  }
 }

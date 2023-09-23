@@ -41,6 +41,12 @@ export class FairyController {
     return this.fairyService.clearMission(user, missionType);
   }
 
+  @Delete()
+  @Roles(ROLE.USER)
+  deleteFairy(@User() user: TUser) {
+    return this.fairyService.deleteFairy(user);
+  }
+
   // 매일 KST 00시
   @Cron('0 0 0 * * *')
   initDailyMissions() {
