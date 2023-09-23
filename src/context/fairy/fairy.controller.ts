@@ -52,8 +52,10 @@ export class FairyController {
   initDailyMissions() {
     return this.fairyService.initDailyMissions();
   }
-  @Cron('0 0 1 * * *')
-  initDailyMissions2() {
-    return this.fairyService.initDailyMissions();
+
+  // 매주 월요일 KST 00시
+  @Cron('0 0 0 * * 1')
+  initWeaklyMissions() {
+    return this.fairyService.initWeaklyMissions();
   }
 }
