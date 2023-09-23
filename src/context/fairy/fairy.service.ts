@@ -57,6 +57,13 @@ export class FairyService {
         data: { quantity: 2 },
       }),
     ]);
+    if (user.id === '3029380983') {
+      await this.inventoryService.acquireRewards(user, {
+        dew: 1000,
+        heart: 1000,
+        magicPowder: 1000,
+      });
+    }
 
     return 'fairy created';
   }
